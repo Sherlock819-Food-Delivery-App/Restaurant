@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurants")
+@RequestMapping("/api/restaurants")
 public class RestaurantController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class RestaurantController {
         return new ResponseEntity<>(restaurantService.createRestaurant(restaurantDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurants() {
         return ResponseEntity.ok(restaurantService.getAllRestaurants());
     }

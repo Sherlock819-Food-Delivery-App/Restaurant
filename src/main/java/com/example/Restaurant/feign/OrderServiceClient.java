@@ -1,4 +1,4 @@
-package com.example.Restaurant.service;
+package com.example.Restaurant.feign;
 
 import org.example.dto.OrderDto;
 import org.springframework.cloud.openfeign.FeignClient;
