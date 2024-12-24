@@ -13,9 +13,10 @@ public class MenuDTO {
     private Long id;
     private String name;
     private String description;
-    private Long restaurantId; // Optional: Reference to the parent Restaurant
-    private List<CategoryDTO> categories; // To include categories associated with the menu
+    private Long restaurantId; // Reference to the Restaurant
+    private List<CategoryDTO> categories;
 
     // Getters and Setters
 }
+
 

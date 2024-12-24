@@ -1,5 +1,6 @@
 package com.example.Restaurant.model;
 
+import com.example.Restaurant.constant.RestaurantStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,35 +24,35 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurantId;
+    private Long id;
 
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
+    private String description;
     private String address;
+    private String city;
+    private String mobile;
+    private String email;
+    private Double rating;
 
-    @Embedded
-    private OpeningHours openingHours;
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private RestaurantOwner owner;
 
-    // Restaurant can have many menus
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Menu> menus;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Category> categories;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RestaurantReview> reviews;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<MenuItem> menuItems;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<WorkingHour> workingHours;
 
-    @Column(unique = true)
-    String mobile;
+    // Geolocation fields
+    private Double latitude;
+    private Double longitude;
 
-    @Column(unique = true)
-    String email;
-
-    @Column(nullable = false)
-    private Boolean isActive = true; // active or inactive
+    @Enumerated(EnumType.STRING)
+    private RestaurantStatus status; // OPEN, CLOSED, BUSY
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -62,4 +63,3 @@ public class Restaurant {
     @Version
     private int version;
 }
-

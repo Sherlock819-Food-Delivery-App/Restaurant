@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +14,14 @@ import java.time.Duration;
 public class MenuItemDTO {
     private Long id;
     private String name;
-    private BigDecimal price;
-    private Duration preparationTime;  // Mapped to Duration
-    private String categoryName;  // Optional to show the category name
-    private Long restaurantId; // To associate with the Restaurant entity
+    private String description;
+    private Double price;
+    private Boolean available;
+    private Long categoryId; // Reference to the Category
+    private Integer rating; // Average rating based on reviews
+    private List<MenuItemReviewDTO> reviews;
+
+    // Getters and Setters
 }
+
 

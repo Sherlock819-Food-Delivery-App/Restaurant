@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor // Generates constructor with parameters
@@ -23,25 +23,21 @@ public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long itemId;
+    private Long id;
 
-    @Column(nullable = false)
     private String name;
-
     private String description;
-
-    @Column(nullable = false)
     private Double price;
+    private Boolean available;
 
-    private Duration preparationTime;
-
-    @ManyToOne
-    @JoinColumn(name = "categoryId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne(optional = false) // This ensures the relationship is not null
-    @JoinColumn(name = "restaurantId", nullable = false) // Assuming this is the foreign key in your MenuItem table
-    private Restaurant restaurant;
+    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MenuItemReview> reviews;
+
+    private Integer rating; // Average rating based on reviews
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -51,4 +47,6 @@ public class MenuItem {
 
     @Version
     private int version;
+    // Getters, Setters, Constructors
 }
+

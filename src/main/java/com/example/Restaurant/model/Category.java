@@ -6,35 +6,42 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "categories")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long id;
 
-    private String name; // E.g., "Appetizers", "Main Course", "Desserts"
+    private String name;
+    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "menuId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
-    // Category can have many menu items
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
-    private List<MenuItem> menuItems;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MenuItem> items;
 
-    // Added reference to the Restaurant for easy access
-    @ManyToOne
-    @JoinColumn(name = "restaurantId", nullable = false)
-    private Restaurant restaurant;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Version
+    private int version;
+    // Getters, Setters, Constructors
 }
 

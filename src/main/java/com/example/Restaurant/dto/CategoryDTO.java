@@ -12,9 +12,11 @@ import java.util.List;
 public class CategoryDTO {
     private Long id;
     private String name;
-    private Long menuId; // Optional: Reference to the parent Menu
-    private List<MenuItemDTO> menuItems; // To include menu items associated with the category
+    private String description;
+    private Long menuId; // Reference to the Menu
+    private List<MenuItemDTO> items;
 
     // Getters and Setters
 }
+
 
