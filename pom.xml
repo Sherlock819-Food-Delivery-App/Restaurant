@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>Restaurant</artifactId>
+	<artifactId>Restaurant-Service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Restaurant</name>
 	<description>Soring Boot app for  MyCafe restaurants</description>
@@ -52,8 +52,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>

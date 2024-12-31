@@ -5,7 +5,4 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY target/Restaurant-0.0.1-SNAPSHOT.jar /app/restaurant.jar
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "restaurant.jar"]
+COPY target/Restaurant-Service-0.0.1-SNAPSHOT.jar /app/target/Restaurant-Service-0.0.1-SNAPSHOT.jar
