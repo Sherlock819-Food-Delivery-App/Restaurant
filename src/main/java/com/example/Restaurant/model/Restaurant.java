@@ -35,7 +35,7 @@ public class Restaurant {
     private Double rating;
 
     @OneToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     private RestaurantOwner owner;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

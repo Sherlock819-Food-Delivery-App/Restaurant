@@ -5,6 +5,7 @@ import com.example.Restaurant.model.*;
 import com.example.Restaurant.repo.*;
 import com.github.javafaker.Faker;
 import jakarta.annotation.PostConstruct;
+import org.example.exceptions.NoSuchElementExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,20 +43,45 @@ public class DataLoader {
     @Autowired
     private PromotionRepo promotionRepository;
 
+    @Autowired
+    private RestaurantOwnerRepo restaurantOwnerRepo;
+
     private final Faker faker = new Faker();
     private final Random random = new Random();
 
     @PostConstruct
     public void loadData() {
         if (restaurantRepository.count() == 0) {
-            loadRestaurants(5); // Load 5 restaurants
+            int numberOfOwners = random.nextInt(2) + 1;
+            loadRestaurantOwners(numberOfOwners);
+            loadRestaurants(numberOfOwners); // Load 5 restaurants
         }
+    }
+
+    private void loadRestaurantOwners(int numberOfOwners) {
+        List<RestaurantOwner> restaurantOwners = new ArrayList<>();
+
+        for (int i = 0; i < numberOfOwners; i++) {
+            RestaurantOwner restaurantOwner = RestaurantOwner.builder()
+                    .email(faker.internet().emailAddress())
+                    .mobile(faker.phoneNumber().phoneNumber())
+                    .role("OWNER")
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .version(1)
+                    .build();
+
+            restaurantOwners.add(restaurantOwner);
+        }
+
+        restaurantOwnerRepo.saveAll(restaurantOwners);
     }
 
     private void loadRestaurants(int numberOfRestaurants) {
         List<Restaurant> restaurants = new ArrayList<>();
 
         for (int i = 0; i < numberOfRestaurants; i++) {
+            RestaurantOwner restaurantOwner = restaurantOwnerRepo.findById((long)i+1).orElse(null);
             Restaurant restaurant = Restaurant.builder()
                     .name(faker.company().name())
                     .description(faker.lorem().paragraph())
@@ -67,6 +93,7 @@ public class DataLoader {
                     .latitude(Double.parseDouble(faker.address().latitude())) // Random latitude
                     .longitude(Double.parseDouble(faker.address().longitude())) // Random longitude
                     .status(randomRestaurantStatus())
+                    .owner(restaurantOwner)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .version(1)

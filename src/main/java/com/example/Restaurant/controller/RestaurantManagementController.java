@@ -33,10 +33,12 @@ public class RestaurantManagementController {
         Long ownerId = getOwnerIdFromAuth();
         logger.info("Fetching restaurant details for owner: {}", ownerId);
         try {
+            if(ownerId == null)
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
             return ResponseEntity.ok(restaurantService.getRestaurant(ownerId));
         } catch (NoSuchElementExistsException e) {
-            logger.error("Error fetching restaurant: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            logger.error("No restaurants found for owner : {}", e.getMessage());
+            return ResponseEntity.ok(null);
         }
     }
 
@@ -46,8 +48,8 @@ public class RestaurantManagementController {
         try {
             return ResponseEntity.ok(restaurantService.getAllRestaurant());
         } catch (Exception e) {
-            logger.error("Error fetching restaurants");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            logger.error("No restaurants found!!");
+            return ResponseEntity.ok(null);
         }
     }
 
