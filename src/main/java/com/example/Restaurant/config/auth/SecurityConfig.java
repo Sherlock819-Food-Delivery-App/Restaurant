@@ -27,7 +27,8 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**"
                                 , "/h2-console/**"
                                 , "/restaurant-management/restaurant/all"
-                                , "/actuator/**")
+                                , "/actuator/**"
+                                , "/restaurant/**")
                         .permitAll() // Allow public access to certain endpoints
                         .anyRequest().authenticated() // All other requests need to be authenticated
                 )

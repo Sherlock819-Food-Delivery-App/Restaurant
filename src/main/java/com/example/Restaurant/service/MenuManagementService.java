@@ -6,6 +6,7 @@ import org.example.exceptions.NoSuchElementExistsException;
 import java.util.List;
 
 public interface MenuManagementService {
+    List<MenuDTO> getMenu(Long menuId);
     List<MenuDTO> getAllMenus(Long restaurantId);
     MenuDTO createMenu(MenuDTO menuDTO, Long restaurantId);
     MenuDTO updateMenu(Long menuId, MenuDTO menuDTO) throws NoSuchElementExistsException;

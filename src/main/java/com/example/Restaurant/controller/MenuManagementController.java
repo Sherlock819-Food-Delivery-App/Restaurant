@@ -36,6 +36,12 @@ public class MenuManagementController {
         return ResponseEntity.ok(menuService.getAllMenus(restaurantId));
     }
 
+    @GetMapping("/{restaurantId}")
+    public ResponseEntity<List<MenuDTO>> getAllMenus(@PathVariable Long restaurantId) {
+        logger.info("Fetching all menus for restaurant: {}", restaurantId);
+        return ResponseEntity.ok(menuService.getAllMenus(restaurantId));
+    }
+
     @PostMapping
     public ResponseEntity<MenuDTO> createMenu(@RequestBody MenuDTO menuDTO) {
         Long restaurantId = getRestaurantIdFromAuth();

@@ -29,6 +29,12 @@ public class MenuManagementServiceImpl implements MenuManagementService {
     private MenuMapper menuMapper;
 
     @Override
+    public List<MenuDTO> getMenu(Long restaurantId) {
+        List<Menu> menus = menuRepository.findByRestaurantId(restaurantId);
+        return menuMapper.toDTO(menus);
+    }
+
+    @Override
     public List<MenuDTO> getAllMenus(Long restaurantId) {
         List<Menu> menus = menuRepository.findByRestaurantId(restaurantId);
         return menuMapper.toDTO(menus);
