@@ -21,8 +21,8 @@ public interface RestaurantMapper {
 
     @AfterMapping
     default void setMenuAndReviewInChildren(@MappingTarget Restaurant restaurant) {
-        if (restaurant.getMenus() != null) {
-            restaurant.getMenus().forEach(menu -> menu.setRestaurant(restaurant));
+        if (restaurant.getMenu() != null) {
+            restaurant.getMenu().setRestaurant(restaurant);
         }
         if (restaurant.getReviews() != null) {
             restaurant.getReviews().forEach(review -> review.setRestaurant(restaurant));
@@ -31,8 +31,8 @@ public interface RestaurantMapper {
 
     @AfterMapping
     default void setRestaurantIdInChildDTOs(@MappingTarget RestaurantDTO restaurantDTO, Restaurant restaurant) {
-        if (restaurantDTO.getMenus() != null) {
-            restaurantDTO.getMenus().forEach(menuDTO -> menuDTO.setRestaurantId(restaurant.getId()));
+        if (restaurantDTO.getMenu() != null) {
+            restaurantDTO.getMenu().setRestaurantId(restaurant.getId());
         }
         if (restaurantDTO.getReviews() != null) {
             restaurantDTO.getReviews().forEach(reviewDTO -> reviewDTO.setRestaurantId(restaurant.getId()));

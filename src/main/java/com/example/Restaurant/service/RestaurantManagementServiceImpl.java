@@ -51,7 +51,7 @@ public class RestaurantManagementServiceImpl implements RestaurantManagementServ
         restaurant.setDescription(toBeUpdatedRestaurantValues.getDescription());
         restaurant.setLatitude(toBeUpdatedRestaurantValues.getLatitude());
         restaurant.setLongitude(toBeUpdatedRestaurantValues.getLongitude());
-        restaurant.setMenus(toBeUpdatedRestaurantValues.getMenus());
+        restaurant.setMenu(toBeUpdatedRestaurantValues.getMenu());
         restaurant.setMobile(toBeUpdatedRestaurantValues.getMobile());
         restaurant.setOwner(toBeUpdatedRestaurantValues.getOwner());
         restaurant.setWorkingHours(toBeUpdatedRestaurantValues.getWorkingHours());

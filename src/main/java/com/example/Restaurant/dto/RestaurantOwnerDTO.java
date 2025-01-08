@@ -9,5 +9,5 @@ public class RestaurantOwnerDTO {
     private String email; // Can be used for sending OTP or notifications
     private String mobile; // Also used for OTP
     private String role;
-    private Restaurant restaurant;
+    private RestaurantDTO restaurant;
 }

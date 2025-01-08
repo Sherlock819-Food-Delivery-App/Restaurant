@@ -1,6 +1,8 @@
 package com.example.Restaurant.controller;
 
+import com.example.Restaurant.dto.CategoryDTO;
 import com.example.Restaurant.dto.MenuDTO;
+import com.example.Restaurant.dto.MenuItemDTO;
 import com.example.Restaurant.repo.RestaurantOwnerRepo;
 import com.example.Restaurant.repo.RestaurantRepo;
 import com.example.Restaurant.service.MenuManagementService;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurant-management/menu")
+@RequestMapping("/menu-management")
 public class MenuManagementController {
 
     private static final Logger logger = LoggerFactory.getLogger(MenuManagementController.class);
@@ -36,10 +38,16 @@ public class MenuManagementController {
         return ResponseEntity.ok(menuService.getAllMenus(restaurantId));
     }
 
-    @GetMapping("/{restaurantId}")
-    public ResponseEntity<List<MenuDTO>> getAllMenus(@PathVariable Long restaurantId) {
-        logger.info("Fetching all menus for restaurant: {}", restaurantId);
-        return ResponseEntity.ok(menuService.getAllMenus(restaurantId));
+    @GetMapping("categories/{restaurantId}")
+    public ResponseEntity<List<CategoryDTO>> getCategories(@PathVariable Long restaurantId) {
+        logger.info("Fetching all categories data for restaurant: {}", restaurantId);
+        return ResponseEntity.ok(menuService.getCategories(restaurantId));
+    }
+
+    @GetMapping("menu-items/{restaurantId}")
+    public ResponseEntity<List<MenuItemDTO>> getMenuItems(@PathVariable Long restaurantId) {
+        logger.info("Fetching all menu items data for restaurant: {}", restaurantId);
+        return ResponseEntity.ok(menuService.getMenuItems(restaurantId));
     }
 
     @PostMapping
@@ -47,6 +55,13 @@ public class MenuManagementController {
         Long restaurantId = getRestaurantIdFromAuth();
         logger.info("Creating menu for restaurant: {}", restaurantId);
         return ResponseEntity.ok(menuService.createMenu(menuDTO, restaurantId));
+    }
+
+    @PostMapping("/categories")
+    public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
+        Long restaurantId = getRestaurantIdFromAuth();
+        logger.info("Creating menu for restaurant: {}", restaurantId);
+        return ResponseEntity.ok(menuService.addCategory(categoryDTO));
     }
 
     @PutMapping("/{menuId}")

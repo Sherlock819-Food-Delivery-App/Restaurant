@@ -5,4 +5,4 @@ FROM openjdk:20-jdk
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY target/Restaurant-Service-0.0.1-SNAPSHOT.jar /app/target/Restaurant-Service-0.0.1-SNAPSHOT.jar
+COPY target/Restaurant-0.0.1-SNAPSHOT.jar /app/target/Restaurant-0.0.1-SNAPSHOT.jar

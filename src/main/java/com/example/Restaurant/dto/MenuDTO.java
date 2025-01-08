@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class MenuDTO {
     private Long id;
-    private String name;
     private String description;
     private Long restaurantId; // Reference to the Restaurant
     private List<CategoryDTO> categories;

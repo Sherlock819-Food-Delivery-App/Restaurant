@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "menus")
+@Table(name = "menu")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 public class Menu {
@@ -25,10 +25,9 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurantId", nullable = false)
     private Restaurant restaurant;
 

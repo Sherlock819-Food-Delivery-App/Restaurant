@@ -1,5 +1,6 @@
 package com.example.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +12,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "restaurant_owners")
+@Table(name = "restaurantOwners")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 public class RestaurantOwner {
     @Id
@@ -25,7 +27,7 @@ public class RestaurantOwner {
     private String mobile; // Also used for OTP
     private String role;
 
-    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Restaurant restaurant;
 
     @CreationTimestamp

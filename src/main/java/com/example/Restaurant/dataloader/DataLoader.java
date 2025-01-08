@@ -52,9 +52,8 @@ public class DataLoader {
     @PostConstruct
     public void loadData() {
         if (restaurantRepository.count() == 0) {
-            int numberOfOwners = random.nextInt(2) + 1;
+            int numberOfOwners = random.nextInt(4) + 1;
             loadRestaurantOwners(numberOfOwners);
-            loadRestaurants(numberOfOwners); // Load 5 restaurants
         }
     }
 
@@ -75,36 +74,35 @@ public class DataLoader {
         }
 
         restaurantOwnerRepo.saveAll(restaurantOwners);
+
+        restaurantOwners.forEach(this::loadRestaurants);
     }
 
-    private void loadRestaurants(int numberOfRestaurants) {
+    private void loadRestaurants(RestaurantOwner restaurantOwner) {
         List<Restaurant> restaurants = new ArrayList<>();
 
-        for (int i = 0; i < numberOfRestaurants; i++) {
-            RestaurantOwner restaurantOwner = restaurantOwnerRepo.findById((long)i+1).orElse(null);
-            Restaurant restaurant = Restaurant.builder()
-                    .name(faker.company().name())
-                    .description(faker.lorem().paragraph())
-                    .address(faker.address().fullAddress())
-                    .city(faker.address().city())
-                    .mobile(faker.phoneNumber().phoneNumber())
-                    .email(faker.internet().emailAddress())
-                    .rating(random.nextDouble() * 5) // Random rating between 0 and 5
-                    .latitude(Double.parseDouble(faker.address().latitude())) // Random latitude
-                    .longitude(Double.parseDouble(faker.address().longitude())) // Random longitude
-                    .status(randomRestaurantStatus())
-                    .owner(restaurantOwner)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .version(1)
-                    .build();
+        Restaurant restaurant = Restaurant.builder()
+                .name(faker.company().name())
+                .description(faker.lorem().paragraph())
+                .address(faker.address().fullAddress())
+                .city(faker.address().city())
+                .mobile(faker.phoneNumber().phoneNumber())
+                .email(faker.internet().emailAddress())
+                .rating(random.nextDouble() * 5) // Random rating between 0 and 5
+                .latitude(Double.parseDouble(faker.address().latitude())) // Random latitude
+                .longitude(Double.parseDouble(faker.address().longitude())) // Random longitude
+                .status(randomRestaurantStatus())
+                .owner(restaurantOwner)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .version(1)
+                .build();
 
-            restaurants.add(restaurant);
-        }
+        restaurants.add(restaurant);
 
         restaurantRepository.saveAll(restaurants);
 
-        restaurants.forEach(this::loadMenus);
+        restaurants.forEach(this::loadMenu);
         restaurants.forEach(this::loadWorkingHours);
         restaurants.forEach(this::loadDeliveryAreas);
         restaurants.forEach(this::loadReviews);
@@ -117,7 +115,6 @@ public class DataLoader {
 
         for (int i = 0; i < numberOfMenus; i++) {
             Menu menu = Menu.builder()
-                    .name(faker.food().dish() + " Menu")
                     .description(faker.lorem().sentence())
                     .restaurant(restaurant)
                     .build();
@@ -127,6 +124,16 @@ public class DataLoader {
 
         menuRepository.saveAll(menus);
         menus.forEach(menu -> loadCategories(menu));
+    }
+
+    private void loadMenu(Restaurant restaurant) {
+        Menu menu = Menu.builder()
+                .description(faker.lorem().sentence())
+                .restaurant(restaurant)
+                .build();
+
+        menuRepository.save(menu);
+        loadCategories(menu);
     }
 
     private void loadCategories(Menu menu) {

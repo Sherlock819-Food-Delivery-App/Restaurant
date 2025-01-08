@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RestaurantDTO {
     private Long id;
+    private Long ownerId;
     private String name;
     private String description;
     private String address;
@@ -22,7 +23,7 @@ public class RestaurantDTO {
     private Double latitude;
     private Double longitude;
     private RestaurantStatus status;
-    private List<MenuDTO> menus;
+    private MenuDTO menu;
     private List<RestaurantReviewDTO> reviews;
     private List<WorkingHourDTO> workingHours;
 

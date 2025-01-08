@@ -34,12 +34,12 @@ public class Restaurant {
     private String email;
     private Double rating;
 
-    @OneToOne
-    @JoinColumn(name = "owner_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ownerId", nullable = false)
     private RestaurantOwner owner;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Menu> menus;
+    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Menu menu;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RestaurantReview> reviews;
