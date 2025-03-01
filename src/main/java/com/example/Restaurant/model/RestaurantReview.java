@@ -1,5 +1,6 @@
 package com.example.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class RestaurantReview {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurantId", nullable = false)
+    @JsonBackReference // Prevents recursion during serialization
     private Restaurant restaurant;
 
     private Long userId; // User ID who submitted the review

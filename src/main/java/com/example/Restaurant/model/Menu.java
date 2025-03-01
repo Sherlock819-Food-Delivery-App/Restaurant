@@ -1,5 +1,6 @@
 package com.example.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class Menu {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurantId", nullable = false)
+    @JsonBackReference // Prevents recursion during serialization
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

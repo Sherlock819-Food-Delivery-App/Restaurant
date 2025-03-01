@@ -20,6 +20,16 @@ public interface MenuManagementService {
 
     CategoryDTO addCategory(CategoryDTO categoryDTO);
 
+    CategoryDTO updateCategory(CategoryDTO categoryDTO);
+
+    boolean deleteCategory(Long categoryId);
+
+    MenuItemDTO addItem(Long categoryId, MenuItemDTO menuItemDTO);
+
+    MenuItemDTO updateItem(Long categoryId, MenuItemDTO menuItemDTO);
+
+    boolean deleteItem(Long ietemId);
+
     MenuDTO updateMenu(Long menuId, MenuDTO menuDTO) throws NoSuchElementExistsException;
 
     void deleteMenu(Long menuId) throws NoSuchElementExistsException;

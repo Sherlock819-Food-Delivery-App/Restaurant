@@ -57,12 +57,48 @@ public class MenuManagementController {
         return ResponseEntity.ok(menuService.createMenu(menuDTO, restaurantId));
     }
 
+
+
+
     @PostMapping("/categories")
     public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
-        Long restaurantId = getRestaurantIdFromAuth();
-        logger.info("Creating menu for restaurant: {}", restaurantId);
         return ResponseEntity.ok(menuService.addCategory(categoryDTO));
     }
+
+    @PutMapping("/categories/{categoryId}")
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {
+        categoryDTO.setId(categoryId);
+        return ResponseEntity.ok(menuService.updateCategory(categoryDTO));
+    }
+
+    @DeleteMapping("/categories/{categoryId}")
+    public ResponseEntity<Boolean> deleteCategory(@PathVariable Long categoryId) {
+        return ResponseEntity.ok(menuService.deleteCategory(categoryId));
+    }
+
+    @PostMapping("/categories/{categoryId}/items")
+    public ResponseEntity<MenuItemDTO> addItem(@PathVariable Long categoryId, @RequestBody MenuItemDTO menuItemDTO) {
+        return ResponseEntity.ok(menuService.addItem(categoryId, menuItemDTO));
+    }
+
+    @PutMapping("/categories/{categoryId}/items/{itemId}")
+    public ResponseEntity<MenuItemDTO> updateItem(@PathVariable Long categoryId,@PathVariable Long itemId, @RequestBody MenuItemDTO menuItemDTO) {
+        menuItemDTO.setId(itemId);
+        menuItemDTO.setCategoryId(categoryId);
+        return ResponseEntity.ok(menuService.updateItem(categoryId, menuItemDTO));
+    }
+
+    @DeleteMapping("/categories/{categoryId}/items/{itemId}")
+    public ResponseEntity<Boolean> deleteItem(@PathVariable Long itemId) {
+        return ResponseEntity.ok(menuService.deleteItem(itemId));
+    }
+
+
+
+
+
+
+
 
     @PutMapping("/{menuId}")
     public ResponseEntity<MenuDTO> updateMenu(@PathVariable Long menuId, @RequestBody MenuDTO menuDTO) {

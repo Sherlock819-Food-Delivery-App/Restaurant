@@ -8,6 +8,7 @@ import com.example.Restaurant.model.Menu;
 import com.example.Restaurant.model.MenuItem;
 import com.example.Restaurant.model.Restaurant;
 import com.example.Restaurant.repo.CategoryRepository;
+import com.example.Restaurant.repo.MenuItemRepo;
 import com.example.Restaurant.repo.MenuRepository;
 import com.example.Restaurant.repo.RestaurantRepo;
 import com.example.Restaurant.utilities.mapper.CategoryMapper;
@@ -46,6 +47,9 @@ public class MenuManagementServiceImpl implements MenuManagementService {
 
     @Autowired
     private RestaurantOwnerService restaurantOwnerService;
+
+    @Autowired
+    private MenuItemRepo menuItemRepository;
 
     @Override
     public List<MenuDTO> getMenu(Long restaurantId) {
@@ -89,24 +93,75 @@ public class MenuManagementServiceImpl implements MenuManagementService {
         if (restaurant.getMenu() != null) {  // Check if menuId is not null
             Menu menu = menuRepository.findById(restaurant.getMenu().getId())
                     .orElseThrow(() -> new NoSuchElementExistsException("Menu not found with id: " + restaurant.getMenu().getId()));
-            menu.getCategories().add(categoryMapper.toEntity(categoryDTO));
-            Menu savedMenu = menuRepository.save(menu);
-            return categoryMapper.toDTO(savedMenu.getCategories().get(savedMenu.getCategories().size() - 1));
+            //Saving and returning category
+            Category category = categoryMapper.toEntity(categoryDTO);
+            category.setMenu(menu);
+            return categoryMapper.toDTO(categoryRepository.save(category));
         }
+        else {
+            //Creating menu for restaurant
+            Menu menu = Menu.builder().restaurant(restaurant).build();
+            menuRepository.save( menu);
 
+            //Assigning menu to restaurant
+            restaurant.setMenu(menu);
+            restaurantRepository.save(restaurant);
 
-        //Creating menu for restaurant
-        Menu menu = Menu.builder().restaurant(restaurant).build();
-        menuRepository.save( menu);
+            //Saving and returning category
+            Category category = categoryMapper.toEntity(categoryDTO);
+            category.setMenu(menu);
+            return categoryMapper.toDTO(categoryRepository.save(category));
+        }
+    }
 
-        //Assigning menu to restaurant
-        restaurant.setMenu(menu);
-        restaurantRepository.save(restaurant);
-
-        //Saving and returning category
-        Category category = categoryMapper.toEntity(categoryDTO);
-        category.setMenu(menu);
+    @Override
+    public CategoryDTO updateCategory(CategoryDTO categoryDTO) {
+        Category category = categoryRepository.findById(categoryDTO.getId())
+                .orElseThrow(() -> new NoSuchElementExistsException("Category not found with id: " + categoryDTO.getId()));
+        category.setName(categoryDTO.getName());
+        category.setDescription(categoryDTO.getDescription());
         return categoryMapper.toDTO(categoryRepository.save(category));
+    }
+
+    @Override
+    public boolean deleteCategory(Long categoryId) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new NoSuchElementExistsException("Category not found with id: " + categoryId);
+        }
+        categoryRepository.deleteById(categoryId);
+        logger.info("Deleted category with id: {}", categoryId);
+        return true;
+    }
+
+    @Override
+    public MenuItemDTO addItem(Long categoryId, MenuItemDTO menuItemDTO) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NoSuchElementExistsException("Category not found with id: " + categoryId));
+        MenuItem menuItem = menuItemMapper.toEntity(menuItemDTO);
+        menuItem.setCategory(category);
+        MenuItem savedMenuItem = menuItemRepository.save(menuItem);
+        return menuItemMapper.toDTO(savedMenuItem);
+    }
+
+    @Override
+    public MenuItemDTO updateItem(Long categoryId, MenuItemDTO menuItemDTO) {
+        MenuItem menuItem = menuItemRepository.findById(menuItemDTO.getId())
+                .orElseThrow(() -> new NoSuchElementExistsException("Item not found with id: " + menuItemDTO.getId()));
+        menuItem.setName(menuItemDTO.getName());
+        menuItem.setDescription(menuItemDTO.getDescription());
+        menuItem.setPrice(menuItemDTO.getPrice());
+        menuItem.setAvailable(menuItemDTO.getAvailable());
+        return menuItemMapper.toDTO(menuItemRepository.save(menuItem));
+    }
+
+    @Override
+    public boolean deleteItem(Long itemId) {
+        if (!menuItemRepository.existsById(itemId)) {
+            throw new NoSuchElementExistsException("Item not found with id: " + itemId);
+        }
+        menuItemRepository.deleteById(itemId);
+        logger.info("Deleted item with id: {}", itemId);
+        return true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.Restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,8 @@ public class RestaurantOwner {
     private String mobile; // Also used for OTP
     private String role;
 
-    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Restaurant restaurant;
 
     @CreationTimestamp

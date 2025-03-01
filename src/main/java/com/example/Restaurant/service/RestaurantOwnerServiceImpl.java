@@ -19,35 +19,35 @@ public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
     private RestaurantOwnerRepo restaurantOwnerRepository;
 
     @Autowired
-    private RestaurantOwnerMapper modelMapper;
+    private RestaurantOwnerMapper restaurantOwnerMapper;
 
     @Override
     public RestaurantOwnerDTO createRestaurantOwner(RestaurantOwnerDTO restaurantOwnerDTO) {
-        RestaurantOwner restaurantOwner = modelMapper.toEntity(restaurantOwnerDTO);
+        RestaurantOwner restaurantOwner = restaurantOwnerMapper.toEntity(restaurantOwnerDTO);
         restaurantOwner = restaurantOwnerRepository.save(restaurantOwner);
-        return modelMapper.toDTO(restaurantOwner);
+        return restaurantOwnerMapper.toDTO(restaurantOwner);
     }
 
     @Override
     public List<RestaurantOwnerDTO> getAllRestaurantOwners() {
         List<RestaurantOwner> restaurantOwners = restaurantOwnerRepository.findAll();
         return restaurantOwners.stream()
-                .map(restaurantOwner -> modelMapper.toDTO(restaurantOwner))
+                .map(restaurantOwner -> restaurantOwnerMapper.toDTO(restaurantOwner))
                 .collect(Collectors.toList());
     }
 
     @Override
     public RestaurantOwnerDTO getRestaurantOwnerById(Long id) {
         RestaurantOwner restaurantOwner = restaurantOwnerRepository.findById(id).orElseThrow();
-        return modelMapper.toDTO(restaurantOwner);
+        return restaurantOwnerMapper.toDTO(restaurantOwner);
     }
 
     @Override
     public RestaurantOwnerDTO updateRestaurantOwner(Long id, RestaurantOwnerDTO restaurantOwnerDTO) {
         RestaurantOwner restaurantOwner = restaurantOwnerRepository.findById(id).orElseThrow();
-        modelMapper.toEntity(restaurantOwnerDTO);
+        restaurantOwnerMapper.toEntity(restaurantOwnerDTO);
         restaurantOwner = restaurantOwnerRepository.save(restaurantOwner);
-        return modelMapper.toDTO(restaurantOwner);
+        return restaurantOwnerMapper.toDTO(restaurantOwner);
     }
 
     @Override

@@ -43,20 +43,17 @@ public class RestaurantManagementServiceImpl implements RestaurantManagementServ
     public RestaurantDTO updateRestaurant(RestaurantDTO restaurantDTO, Long ownerId) {
         Restaurant restaurant = restaurantRepository.findByOwnerId(ownerId)
                 .orElseThrow(() -> new NoSuchElementExistsException("Restaurant not found for owner id: " + ownerId));
-        Restaurant toBeUpdatedRestaurantValues = restaurantMapper.toEntity(restaurantDTO);
-        restaurant.setName(toBeUpdatedRestaurantValues.getName());
-        restaurant.setAddress(toBeUpdatedRestaurantValues.getAddress());
-        restaurant.setCity(toBeUpdatedRestaurantValues.getCity());
-        restaurant.setEmail(toBeUpdatedRestaurantValues.getEmail());
-        restaurant.setDescription(toBeUpdatedRestaurantValues.getDescription());
-        restaurant.setLatitude(toBeUpdatedRestaurantValues.getLatitude());
-        restaurant.setLongitude(toBeUpdatedRestaurantValues.getLongitude());
-        restaurant.setMenu(toBeUpdatedRestaurantValues.getMenu());
-        restaurant.setMobile(toBeUpdatedRestaurantValues.getMobile());
-        restaurant.setOwner(toBeUpdatedRestaurantValues.getOwner());
-        restaurant.setWorkingHours(toBeUpdatedRestaurantValues.getWorkingHours());
-        restaurant.setReviews(toBeUpdatedRestaurantValues.getReviews());
-        restaurant.setStatus(toBeUpdatedRestaurantValues.getStatus());
+
+        restaurant.setName(restaurantDTO.getName());
+        restaurant.setAddress(restaurantDTO.getAddress());
+        restaurant.setCity(restaurantDTO.getCity());
+        restaurant.setEmail(restaurantDTO.getEmail());
+        restaurant.setDescription(restaurantDTO.getDescription());
+        restaurant.setLatitude(restaurantDTO.getLatitude());
+        restaurant.setLongitude(restaurantDTO.getLongitude());
+        restaurant.setMobile(restaurantDTO.getMobile());
+        restaurant.setStatus(restaurantDTO.getStatus());
+
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
         return restaurantMapper.toDTO(updatedRestaurant);
     }

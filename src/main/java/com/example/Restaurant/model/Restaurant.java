@@ -1,7 +1,9 @@
 package com.example.Restaurant.model;
 
 import com.example.Restaurant.constant.RestaurantStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,15 +38,19 @@ public class Restaurant {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerId", nullable = false)
+    @JsonBackReference
     private RestaurantOwner owner;
 
-    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Prevents recursion during serialization
     private Menu menu;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Prevents recursion during serialization
     private List<RestaurantReview> reviews;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Prevents recursion during serialization
     private List<WorkingHour> workingHours;
 
     // Geolocation fields

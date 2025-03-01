@@ -1,6 +1,8 @@
 package com.example.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,10 +33,12 @@ public class MenuItem {
     private Boolean available;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "categoryId", nullable = false)
+    @JsonBackReference // Prevents recursion during serialization
     private Category category;
 
-    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL)
+    @JsonManagedReference // Prevents recursion during serialization
     private List<MenuItemReview> reviews;
 
     private Integer rating; // Average rating based on reviews

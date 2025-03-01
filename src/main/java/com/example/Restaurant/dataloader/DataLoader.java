@@ -72,7 +72,6 @@ public class DataLoader {
 
             restaurantOwners.add(restaurantOwner);
         }
-
         restaurantOwnerRepo.saveAll(restaurantOwners);
 
         restaurantOwners.forEach(this::loadRestaurants);

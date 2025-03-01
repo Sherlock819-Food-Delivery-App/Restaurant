@@ -1,5 +1,6 @@
 package com.example.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class WorkingHour {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurantId", nullable = false)
+    @JsonBackReference // Prevents recursion during serialization
     private Restaurant restaurant;
 
     @CreationTimestamp
